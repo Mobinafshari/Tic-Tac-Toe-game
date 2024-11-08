@@ -1,0 +1,43 @@
+body {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: cursive;
+}
+
+.parent {
+  min-width: 100%;
+  min-height: 100vh;
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dooz {
+  width: 600px;
+  height: 600px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.square {
+  background-color: #fff;
+  max-height: 200px;
+  border: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  &__icon{
+    font-size: 80px;
+    width: 80px;
+    height: 80px;
+}
+}
+.reset-button{
+  padding: 4px 10px;
+  background-color: green;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  width: 80px;
+}
