@@ -5,20 +5,20 @@ import Icon from "./Icon";
 
 type Props = {
   index: number;
-  gameOver : boolean;
+  gameOver: boolean;
 };
 function Square({ index, gameOver }: Props) {
   const [isClicked, setIsClicked] = useState(false);
-  const { handleSelect, player, selected , reseted} = usePlayerContext();
+  const { handleSelect, player, selected, reseted } = usePlayerContext();
   useEffect(() => {
-    setIsClicked(false)
-  } , [reseted])
+    setIsClicked(false);
+  }, [reseted]);
+
   const findSelected = () =>
     selected.find((ele) => ele.index === index)?.player ?? player;
+
   const LocalPLayer = findSelected();
-  useEffect(() => {
-    if(gameOver &&  reseted) setIsClicked(false)
-  } , [reseted , gameOver])
+
   return (
     <div
       style={{ cursor: gameOver ? "not-allowed" : "pointer" }}

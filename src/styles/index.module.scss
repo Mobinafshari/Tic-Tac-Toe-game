@@ -8,28 +8,29 @@ body {
 .parent {
   min-width: 100%;
   min-height: 100vh;
-  background-color: grey;
+  background-color: white;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .dooz {
-  width: 600px;
-  height: 600px;
+  width: 40vw;
+  height: 80vh;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
 }
 .square {
-  background-color: #fff;
+  background-color: #C9F9FC;
+  border: 5px solid black;
+  border-radius: 16px;
   max-height: 200px;
-  border: 1px solid grey;
     display: flex;
     align-items: center;
     justify-content: center;
   &__icon{
-    font-size: 80px;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
 }
 }
 .reset-button{
