@@ -26,7 +26,7 @@ function Square({ index, gameOver }: Props) {
       style={{ cursor: gameOver ? "not-allowed" : "pointer" }}
       className={styles["square"]}
       onClick={() => {
-        if (isClicked) return;
+        if (isClicked || gameOver) return;
         setIsClicked(true);
         handleSelect({ index, player });
       }}>

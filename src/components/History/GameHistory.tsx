@@ -13,7 +13,9 @@ function GameHistory() {
             <div
               key={index}
               className={styles["history__choice"]}
-              onClick={() => handleChosenPrev(choice)}>
+              onClick={() => {
+                handleChosenPrev(choice);
+              }}>
               <div className={styles["history__choice-infos"]}>
                 <span>Player: {choice.player === "one" ? "X" : "O"}</span>
                 <span>{findChosen(choice.index)}</span>

@@ -9,7 +9,7 @@ type contextType = {
   player: Player;
   handleSelect: (value: Selected) => void;
   selected: Selected[];
-  getPlayerSelectedIndices: (player: Player) => number[];
+  getPlayerSelectedIndexes: (player: Player) => number[];
   reset: () => void;
   reseted: boolean;
   handleChosenPrev: (value: Selected) => void;
@@ -32,15 +32,17 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const handleSelect = (playerChoice: Selected) => {
     setSelected((prev) => [...prev, playerChoice]);
     handleChange();
+    setReseted(false);
   };
 
   const handleChosenPrev = (playerChoice: Selected) => {
     const chosenMove = selected.findIndex((choice) => choice === playerChoice);
     setSelected(selected.slice(0, chosenMove + 1));
     setPlayer(playerChoice.player === "one" ? "two" : "one");
+    setReseted(true);
   };
 
-  const getPlayerSelectedIndices = (player: Player): number[] => {
+  const getPlayerSelectedIndexes = (player: Player): number[] => {
     return selected
       .filter((choice) => choice.player === player)
       .map((choice) => choice.index);
@@ -56,7 +58,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         player,
         handleSelect,
         selected,
-        getPlayerSelectedIndices,
+        getPlayerSelectedIndexes,
         reset: handleReset,
         reseted,
         handleChosenPrev,
