@@ -2,16 +2,17 @@ import { createContext, ReactNode, useContext, useState } from "react";
 type Player = "one" | "two";
 
 type Selected = {
-  player : Player ;
-  index : number;
-}
+  player: Player;
+  index: number;
+};
 type contextType = {
   player: Player;
   handleSelect: (value: Selected) => void;
   selected: Selected[];
   getPlayerSelectedIndices: (player: Player) => number[];
   reset: () => void;
-  reseted : boolean;
+  reseted: boolean;
+  handleChosenPrev : (value : Selected) => void;
 };
 const PlayerContext = createContext<contextType | undefined>(undefined);
 
@@ -23,15 +24,19 @@ export const usePlayerContext = () => {
 
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [player, setPlayer] = useState<Player>("one");
-  const [selected , setSelected] = useState<Selected[]>([]);
-  console.log(selected)
-  const [ reseted ,setReseted] = useState(false)
+  const [selected, setSelected] = useState<Selected[]>([]);
+  const [reseted, setReseted] = useState(false);
   const handleChange = () => {
     setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));
   };
-  const handleSelect = (playerChoice : Selected) => {
-    setSelected((prev) => [...prev , playerChoice]);
-    handleChange()
+  const handleSelect = (playerChoice: Selected) => {
+    setSelected((prev) => [...prev, playerChoice]);
+    handleChange();
+  };
+
+  const handleChosenPrev = (playerChoice: Selected) => {
+    const chosenMove = selected.findIndex((choice) => choice === playerChoice);
+    setSelected(selected.slice(0, chosenMove + 1));
   };
 
   const getPlayerSelectedIndices = (player: Player): number[] => {
@@ -43,7 +48,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     setSelected([]);
     setReseted(true);
     setPlayer("one");
-  }
+  };
   return (
     <PlayerContext.Provider
       value={{
@@ -53,6 +58,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         getPlayerSelectedIndices,
         reset: handleReset,
         reseted,
+        handleChosenPrev,
       }}>
       {children}
     </PlayerContext.Provider>

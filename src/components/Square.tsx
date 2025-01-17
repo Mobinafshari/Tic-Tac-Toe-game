@@ -10,9 +10,11 @@ type Props = {
 function Square({ index, gameOver }: Props) {
   const [isClicked, setIsClicked] = useState(false);
   const { handleSelect, player, selected, reseted } = usePlayerContext();
+  const isSelected = selected.find((select) => select.index === index);
   useEffect(() => {
+    if (isSelected) return;
     setIsClicked(false);
-  }, [reseted]);
+  }, [reseted, isSelected]);
 
   const findSelected = () =>
     selected.find((ele) => ele.index === index)?.player ?? player;
