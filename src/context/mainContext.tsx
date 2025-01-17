@@ -24,6 +24,7 @@ export const usePlayerContext = () => {
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [player, setPlayer] = useState<Player>("one");
   const [selected , setSelected] = useState<Selected[]>([]);
+  console.log(selected)
   const [ reseted ,setReseted] = useState(false)
   const handleChange = () => {
     setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));

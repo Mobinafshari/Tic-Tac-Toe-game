@@ -1,0 +1,42 @@
+.parent {
+  flex-basis: 35%;
+  padding: 40px 20px;
+  height: 100%;
+  & h2 {
+    text-align: center;
+    font-weight: 400;
+    margin-bottom: 60px;
+  }
+}
+.history {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 2px solid gray;
+  border-radius: 16px;
+  &__choice:first-child {
+    border-top-right-radius: 16px;
+    border-top-left-radius: 16px;
+  }
+  &__choice:last-child {
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+  }
+
+  &__choice {
+    width: 100%;
+    &:hover {
+      background-color: #c9f9fc;
+    }
+  }
+  &__choice-infos {
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+  }
+}
