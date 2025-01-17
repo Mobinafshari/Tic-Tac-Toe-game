@@ -2,7 +2,6 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: cursive;
 }
 
 .parent {
@@ -10,30 +9,36 @@ body {
   min-height: 100vh;
   background-color: white;
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
+}
+.container {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
 }
 .dooz {
   width: 40vw;
-  height: 80vh;
+  height: 75vh;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
 }
 .square {
-  background-color: #C9F9FC;
+  background-color: #c9f9fc;
   border: 5px solid black;
   border-radius: 16px;
   max-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  &__icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &__icon {
     width: 100px;
     height: 100px;
+  }
 }
-}
-.reset-button{
+.reset-button {
   padding: 4px 10px;
   background-color: green;
   color: white;
@@ -41,4 +46,17 @@ body {
   cursor: pointer;
   border: none;
   width: 80px;
+}
+
+.players {
+  display: flex;
+  align-items: center;
+  padding: 0 50px;
+  justify-content: space-around;
+  gap: 20px;
+  &__item{
+    & p{
+      font-size: 20px;
+    }
+  }
 }

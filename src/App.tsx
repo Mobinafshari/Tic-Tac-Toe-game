@@ -6,9 +6,9 @@ import styles from "./styles/index.module.scss";
 function App() {
   return (
     <ContextProvider>
-      <div className={styles["parent"]}>
+      <section className={styles["parent"]}>
         <Dooz />
-      </div>
+      </section>
       <Toaster />
     </ContextProvider>
   );
