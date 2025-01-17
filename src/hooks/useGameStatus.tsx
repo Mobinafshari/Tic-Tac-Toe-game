@@ -5,7 +5,8 @@ import { usePlayerContext } from "../context/mainContext";
 import styles from "../styles/index.module.scss";
 
 function useGameStatus() {
-  const { getPlayerSelectedIndexes, reset, reseted } = usePlayerContext();
+  const { getPlayerSelectedIndexes, reset, reseted, selected } =
+    usePlayerContext();
   const [gameOver, setGameOver] = useState(false);
   useEffect(() => {
     setGameOver(false);
@@ -30,12 +31,25 @@ function useGameStatus() {
             </button>
           </div>
         ));
-      }
+      } else return false;
     };
 
-    checkWin("one");
-    checkWin("two");
-  }, [getPlayerSelectedIndexes, reset]);
+    const isOneWins = checkWin("one");
+    const isTwoWins = checkWin("two");
+    if (!isOneWins && !isTwoWins && selected.length === 9) {
+      setGameOver(true);
+      toast((t) => (
+        <div className={styles["toast"]}>
+          <p
+            onClick={() => {
+              toast.dismiss(t.id);
+            }}>
+            It's a draw! Great effort from both players!
+          </p>
+        </div>
+      ));
+    }
+  }, [getPlayerSelectedIndexes, reset, selected]);
 
   return { gameOver };
 }
