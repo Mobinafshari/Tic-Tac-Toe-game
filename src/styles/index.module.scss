@@ -16,9 +16,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 30px;
+  flex: 1;
+
 }
 .dooz {
-  width: 40vw;
+  width: 100%;
   height: 75vh;
   display: grid;
   grid-template-columns: repeat(3, 1fr);

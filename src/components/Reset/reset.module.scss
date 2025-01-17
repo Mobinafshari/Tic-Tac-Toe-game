@@ -1,0 +1,15 @@
+.reset {
+  flex-basis: 20%;
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  &__button{
+    padding: 4px 8px;
+    background-color: #c9f9fc;
+    font-size: 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 2px solid black;
+}
+}

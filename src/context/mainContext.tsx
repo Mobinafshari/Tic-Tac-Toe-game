@@ -12,7 +12,7 @@ type contextType = {
   getPlayerSelectedIndices: (player: Player) => number[];
   reset: () => void;
   reseted: boolean;
-  handleChosenPrev : (value : Selected) => void;
+  handleChosenPrev: (value: Selected) => void;
 };
 const PlayerContext = createContext<contextType | undefined>(undefined);
 
@@ -37,6 +37,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const handleChosenPrev = (playerChoice: Selected) => {
     const chosenMove = selected.findIndex((choice) => choice === playerChoice);
     setSelected(selected.slice(0, chosenMove + 1));
+    setPlayer(playerChoice.player === "one" ? "two" : "one");
   };
 
   const getPlayerSelectedIndices = (player: Player): number[] => {

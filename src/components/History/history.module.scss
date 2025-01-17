@@ -15,14 +15,14 @@
   justify-content: center;
   flex-direction: column;
   border: 2px solid gray;
-  border-radius: 16px;
+  border-radius: 8px;
   &__choice:first-child {
-    border-top-right-radius: 16px;
-    border-top-left-radius: 16px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
   }
   &__choice:last-child {
-    border-bottom-right-radius: 16px;
-    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
   }
 
   &__choice {
