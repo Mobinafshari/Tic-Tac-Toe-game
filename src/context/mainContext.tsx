@@ -4,6 +4,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -54,12 +55,13 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     const moves = localStorage.getItem("moves");
     return moves ? [JSON.parse(moves)] : [[]];
   });
-
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [reseted, setReseted] = useState(false);
 
-  const selected = history[currentStep];
-
+  const selected = useMemo(
+    () => history[currentStep] ?? [],
+    [history, currentStep]
+  );
   useEffect(() => {
     const currentMoves = JSON.stringify(selected);
     const currentPlayer = player;
@@ -97,13 +99,12 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       );
       setHistory((prev) =>
         prev
-          .slice(0, currentStep + 1)
-          .map((step, idx) =>
-            idx === currentStep ? step.slice(0, chosenMove + 1) : step
-          )
+          .slice(0, chosenMove + 2)
+          
       );
       setPlayer(playerChoice.player === "one" ? "two" : "one");
       setReseted(true);
+      setCurrentStep(playerChoice.index + 1);
     },
     [selected, currentStep]
   );

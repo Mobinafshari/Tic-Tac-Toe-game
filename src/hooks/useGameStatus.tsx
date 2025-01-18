@@ -5,12 +5,12 @@ import { usePlayerContext } from "../context/mainContext";
 import styles from "../styles/index.module.scss";
 
 function useGameStatus() {
-  const { getPlayerSelectedIndexes, reset, reseted, selected } =
+  const { getPlayerSelectedIndexes, reset, reseted, selected , undo} =
     usePlayerContext();
   const [gameOver, setGameOver] = useState(false);
   useEffect(() => {
     setGameOver(false);
-  }, [reseted]);
+  }, [reseted , undo]);
   useEffect(() => {
     const checkWin = (player: "one" | "two") => {
       const selectedIndices = getPlayerSelectedIndexes(player).sort();
