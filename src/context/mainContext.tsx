@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useSearchParams } from "react-router-dom";
 type Player = "one" | "two";
 
 type Selected = {
@@ -29,19 +30,22 @@ export const usePlayerContext = () => {
 };
 
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [player, setPlayer] = useState<Player>(() => {
-    const player = localStorage.getItem("player") ?? "one";
+    const player = (localStorage.getItem("player") as Player) ?? "one";
     return player;
   });
   const [selected, setSelected] = useState<Selected[]>(() => {
     const moves = localStorage.getItem("moves");
     return moves ? JSON.parse(moves) : [];
   });
+  // console.log(JSON.parse(searchParams.get("moves") ?? "[]"));
+  // console.log(searchParams.get("player"));
   useEffect(() => {
-    console.log("salam");
+    setSearchParams({ moves: JSON.stringify(selected), player });
     localStorage.setItem("moves", JSON.stringify(selected));
     localStorage.setItem("player", player);
-  }, [selected]);
+  }, [selected, player, setSearchParams]);
   const [reseted, setReseted] = useState(false);
   const handleChange = () => {
     setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));
