@@ -3,7 +3,7 @@ import { usePlayerContext } from "../../context/mainContext";
 import styles from "./reset.module.scss";
 
 function GameButtons() {
-  const { reset } = usePlayerContext();
+  const { reset, canRedo, canUndo, redo, undo } = usePlayerContext();
   return (
     <section>
       <div className={styles["reset"]}>
@@ -18,17 +18,27 @@ function GameButtons() {
         </button>
       </div>
       <div className={styles["command-controls"]}>
-        <button className={styles["reset__button"]} onClick={reset}>
+        <button
+          className={`${styles["reset__button"]} ${
+            !canUndo ? styles["disable"] : ""
+          }`}
+          onClick={undo}>
           <span>Undo</span>
-          <CustomIcon icon="Undo" svgProps={{ width: 20 }} />
+          <CustomIcon
+            icon="Undo"
+            svgProps={{ width: 20, fill: canUndo ? "" : "white" }}
+          />
         </button>
         <button
-          onClick={() => alert("Hello There!")}
+          onClick={redo}
           className={`${styles["reset__button"]} ${
-            false ? styles["disable"] : ""
+            !canRedo ? styles["disable"] : ""
           }`}>
           <span>Redo</span>
-          <CustomIcon icon="Redo" svgProps={{ width: 20 }} />
+          <CustomIcon
+            icon="Redo"
+            svgProps={{ width: 20, fill: canRedo ? "" : "white" }}
+          />
         </button>
       </div>
     </section>

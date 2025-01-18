@@ -31,6 +31,7 @@ function useGameStatus() {
             </button>
           </div>
         ));
+        return true;
       } else return false;
     };
 

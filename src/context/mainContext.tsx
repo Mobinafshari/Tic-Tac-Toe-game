@@ -7,13 +7,15 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
+
 type Player = "one" | "two";
 
 type Selected = {
   player: Player;
   index: number;
 };
-type contextType = {
+
+type ContextType = {
   player: Player;
   handleSelect: (value: Selected) => void;
   selected: Selected[];
@@ -21,8 +23,13 @@ type contextType = {
   reset: () => void;
   reseted: boolean;
   handleChosenPrev: (value: Selected) => void;
+  undo: () => void;
+  redo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 };
-const PlayerContext = createContext<contextType | undefined>(undefined);
+
+const PlayerContext = createContext<ContextType | undefined>(undefined);
 
 export const usePlayerContext = () => {
   const context = useContext(PlayerContext);
@@ -39,13 +46,20 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     const player = (localStorage.getItem("player") as Player) ?? "one";
     return player;
   });
-  const [selected, setSelected] = useState<Selected[]>(() => {
+
+  const [history, setHistory] = useState<Selected[][]>(() => {
     if (searchParams.get("moves")) {
-      return JSON.parse(searchParams.get("moves")!);
+      return [JSON.parse(searchParams.get("moves")!)];
     }
     const moves = localStorage.getItem("moves");
-    return moves ? JSON.parse(moves) : [];
+    return moves ? [JSON.parse(moves)] : [[]];
   });
+
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [reseted, setReseted] = useState(false);
+
+  const selected = history[currentStep];
+
   useEffect(() => {
     const currentMoves = JSON.stringify(selected);
     const currentPlayer = player;
@@ -59,17 +73,21 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem("player", currentPlayer);
     }
   }, [selected, player, setSearchParams, searchParams]);
-  const [reseted, setReseted] = useState(false);
+
   const handleChange = useCallback(() => {
     setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));
   }, []);
+
   const handleSelect = useCallback(
     (playerChoice: Selected) => {
-      setSelected((prev) => [...prev, playerChoice]);
+      const newHistory = history.slice(0, currentStep + 1);
+      const newSelected = [...selected, playerChoice];
+      setHistory([...newHistory, newSelected]);
+      setCurrentStep(newHistory.length);
       handleChange();
       setReseted(false);
     },
-    [handleChange]
+    [history, currentStep, selected, handleChange]
   );
 
   const handleChosenPrev = useCallback(
@@ -77,12 +95,34 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       const chosenMove = selected.findIndex(
         (choice) => choice === playerChoice
       );
-      setSelected(selected.slice(0, chosenMove + 1));
+      setHistory((prev) =>
+        prev
+          .slice(0, currentStep + 1)
+          .map((step, idx) =>
+            idx === currentStep ? step.slice(0, chosenMove + 1) : step
+          )
+      );
       setPlayer(playerChoice.player === "one" ? "two" : "one");
       setReseted(true);
     },
-    [selected]
+    [selected, currentStep]
   );
+
+  const undo = useCallback(() => {
+    if (currentStep > 0) {
+      setCurrentStep((prev) => prev - 1);
+      setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));
+      setReseted(false);
+    }
+  }, [currentStep]);
+
+  const redo = useCallback(() => {
+    if (currentStep < history.length - 1) {
+      setCurrentStep((prev) => prev + 1);
+      setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));
+      setReseted(false);
+    }
+  }, [currentStep, history.length]);
 
   const getPlayerSelectedIndexes = useCallback(
     (player: Player): number[] => {
@@ -92,12 +132,15 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     },
     [selected]
   );
+
   const handleReset = useCallback(() => {
-    setSelected([]);
-    setReseted(true);
+    setHistory([[]]);
+    setCurrentStep(0);
     setPlayer("one");
+    setReseted(true);
     localStorage.clear();
   }, []);
+
   return (
     <PlayerContext.Provider
       value={{
@@ -108,6 +151,10 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
         reset: handleReset,
         reseted,
         handleChosenPrev,
+        undo,
+        redo,
+        canUndo: currentStep > 0,
+        canRedo: currentStep < history.length - 1,
       }}>
       {children}
     </PlayerContext.Provider>

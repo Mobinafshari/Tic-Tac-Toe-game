@@ -14,9 +14,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    & .disable{
-      background-color: #ccc;
-    }
+    
 }
 }
 .command-controls{
@@ -25,3 +23,9 @@
   align-items: center;
   justify-content: space-between;
 }
+.disable{
+      background-color: #ccc;
+      color: white;
+      cursor: not-allowed;
+      border-color: #726363;
+    }
