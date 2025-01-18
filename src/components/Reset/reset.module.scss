@@ -11,5 +11,17 @@
     border-radius: 8px;
     cursor: pointer;
     border: 2px solid black;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    & .disable{
+      background-color: #ccc;
+    }
 }
+}
+.command-controls{
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

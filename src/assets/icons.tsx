@@ -3,6 +3,8 @@ import { lazy, Suspense, SVGProps } from "react";
 const icons = {
   Cross: lazy(() => import("./icons/cross-icon.svg?react")),
   O: lazy(() => import("./icons/O-icon.svg?react")),
+  Redo: lazy(() => import("./icons/redo-arrow-icon.svg?react")),
+  Undo: lazy(() => import("./icons/undo-arrow-icon.svg?react")),
 };
 
 type CustomIcon = {

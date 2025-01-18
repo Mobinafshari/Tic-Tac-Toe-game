@@ -4,7 +4,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -47,7 +46,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     const moves = localStorage.getItem("moves");
     return moves ? JSON.parse(moves) : [];
   });
-  const MemoSelected = useMemo(() => selected, [selected]);
   useEffect(() => {
     const currentMoves = JSON.stringify(selected);
     const currentPlayer = player;
@@ -105,7 +103,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       value={{
         player,
         handleSelect,
-        selected: MemoSelected,
+        selected,
         getPlayerSelectedIndexes,
         reset: handleReset,
         reseted,
