@@ -1,8 +1,10 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -32,54 +34,78 @@ export const usePlayerContext = () => {
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [player, setPlayer] = useState<Player>(() => {
+    if (searchParams.get("player")) {
+      return searchParams.get("player") as Player;
+    }
     const player = (localStorage.getItem("player") as Player) ?? "one";
     return player;
   });
   const [selected, setSelected] = useState<Selected[]>(() => {
+    if (searchParams.get("moves")) {
+      return JSON.parse(searchParams.get("moves")!);
+    }
     const moves = localStorage.getItem("moves");
     return moves ? JSON.parse(moves) : [];
   });
-  // console.log(JSON.parse(searchParams.get("moves") ?? "[]"));
-  // console.log(searchParams.get("player"));
+  const MemoSelected = useMemo(() => selected, [selected]);
   useEffect(() => {
-    setSearchParams({ moves: JSON.stringify(selected), player });
-    localStorage.setItem("moves", JSON.stringify(selected));
-    localStorage.setItem("player", player);
-  }, [selected, player, setSearchParams]);
+    const currentMoves = JSON.stringify(selected);
+    const currentPlayer = player;
+
+    const prevMoves = searchParams.get("moves");
+    const prevPlayer = searchParams.get("player");
+
+    if (currentMoves !== prevMoves || currentPlayer !== prevPlayer) {
+      setSearchParams({ moves: currentMoves, player: currentPlayer });
+      localStorage.setItem("moves", currentMoves);
+      localStorage.setItem("player", currentPlayer);
+    }
+  }, [selected, player, setSearchParams, searchParams]);
   const [reseted, setReseted] = useState(false);
-  const handleChange = () => {
+  const handleChange = useCallback(() => {
     setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));
-  };
-  const handleSelect = (playerChoice: Selected) => {
-    setSelected((prev) => [...prev, playerChoice]);
-    handleChange();
-    setReseted(false);
-  };
+  }, []);
+  const handleSelect = useCallback(
+    (playerChoice: Selected) => {
+      setSelected((prev) => [...prev, playerChoice]);
+      handleChange();
+      setReseted(false);
+    },
+    [handleChange]
+  );
 
-  const handleChosenPrev = (playerChoice: Selected) => {
-    const chosenMove = selected.findIndex((choice) => choice === playerChoice);
-    setSelected(selected.slice(0, chosenMove + 1));
-    setPlayer(playerChoice.player === "one" ? "two" : "one");
-    setReseted(true);
-  };
+  const handleChosenPrev = useCallback(
+    (playerChoice: Selected) => {
+      const chosenMove = selected.findIndex(
+        (choice) => choice === playerChoice
+      );
+      setSelected(selected.slice(0, chosenMove + 1));
+      setPlayer(playerChoice.player === "one" ? "two" : "one");
+      setReseted(true);
+    },
+    [selected]
+  );
 
-  const getPlayerSelectedIndexes = (player: Player): number[] => {
-    return selected
-      .filter((choice) => choice.player === player)
-      .map((choice) => choice.index);
-  };
-  const handleReset = () => {
+  const getPlayerSelectedIndexes = useCallback(
+    (player: Player): number[] => {
+      return selected
+        .filter((choice) => choice.player === player)
+        .map((choice) => choice.index);
+    },
+    [selected]
+  );
+  const handleReset = useCallback(() => {
     setSelected([]);
     setReseted(true);
     setPlayer("one");
     localStorage.clear();
-  };
+  }, []);
   return (
     <PlayerContext.Provider
       value={{
         player,
         handleSelect,
-        selected,
+        selected: MemoSelected,
         getPlayerSelectedIndexes,
         reset: handleReset,
         reseted,

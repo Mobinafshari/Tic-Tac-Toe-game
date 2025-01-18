@@ -5,7 +5,6 @@ import { usePlayerContext } from "../context/mainContext";
 import styles from "../styles/index.module.scss";
 
 function useGameStatus() {
-  console.log('dadasshhh')
   const { getPlayerSelectedIndexes, reset, reseted, selected } =
     usePlayerContext();
   const [gameOver, setGameOver] = useState(false);
