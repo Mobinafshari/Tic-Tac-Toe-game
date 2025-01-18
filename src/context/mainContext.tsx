@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 type Player = "one" | "two";
 
 type Selected = {
@@ -23,8 +29,19 @@ export const usePlayerContext = () => {
 };
 
 export const ContextProvider = ({ children }: { children: ReactNode }) => {
-  const [player, setPlayer] = useState<Player>("one");
-  const [selected, setSelected] = useState<Selected[]>([]);
+  const [player, setPlayer] = useState<Player>(() => {
+    const player = localStorage.getItem("player") ?? "one";
+    return player;
+  });
+  const [selected, setSelected] = useState<Selected[]>(() => {
+    const moves = localStorage.getItem("moves");
+    return moves ? JSON.parse(moves) : [];
+  });
+  useEffect(() => {
+    console.log("salam");
+    localStorage.setItem("moves", JSON.stringify(selected));
+    localStorage.setItem("player", player);
+  }, [selected]);
   const [reseted, setReseted] = useState(false);
   const handleChange = () => {
     setPlayer((prevPlayer) => (prevPlayer === "one" ? "two" : "one"));
@@ -51,6 +68,7 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
     setSelected([]);
     setReseted(true);
     setPlayer("one");
+    localStorage.clear();
   };
   return (
     <PlayerContext.Provider
