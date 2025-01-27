@@ -1,10 +1,13 @@
-.reset {
+.buttons-parent {
   flex-basis: 25%;
+}
+.reset {
   padding: 40px 20px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 8px;
-  &__button{
+  &__button {
     padding: 4px 8px;
     background-color: #c9f9fc;
     font-size: 24px;
@@ -14,18 +17,17 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    
+  }
 }
-}
-.command-controls{
+.command-controls {
   padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.disable{
-      background-color: #ccc;
-      color: white;
-      cursor: not-allowed;
-      border-color: #726363;
-    }
+.disable {
+  background-color: #ccc;
+  color: white;
+  cursor: not-allowed;
+  border-color: #726363;
+}

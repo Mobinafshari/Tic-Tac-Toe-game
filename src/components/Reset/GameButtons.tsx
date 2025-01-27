@@ -5,7 +5,7 @@ import styles from "./reset.module.scss";
 function GameButtons() {
   const { reset, canRedo, canUndo, redo, undo } = usePlayerContext();
   return (
-    <section>
+    <section className={styles["buttons-parent"]}>
       <div className={styles["reset"]}>
         <button className={styles["reset__button"]} onClick={reset}>
           Reset Game

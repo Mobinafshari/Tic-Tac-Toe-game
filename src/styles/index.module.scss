@@ -6,7 +6,8 @@ body {
 
 .parent {
   min-width: 100%;
-  min-height: 100vh;
+  min-height: 703px;
+  max-height: 703px;
   background-color: white;
   display: flex;
   align-items: start;
