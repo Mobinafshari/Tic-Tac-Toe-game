@@ -57,7 +57,6 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
   });
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [reseted, setReseted] = useState(false);
-
   const selected = useMemo(
     () => history[currentStep] ?? [],
     [history, currentStep]
@@ -97,14 +96,14 @@ export const ContextProvider = ({ children }: { children: ReactNode }) => {
       const chosenMove = selected.findIndex(
         (choice) => choice === playerChoice
       );
-      setHistory((prev) =>
-        prev
-          .slice(0, chosenMove + 2)
-          
+      setHistory(
+        history
+        .slice(0, chosenMove + 2)
+        
       );
+      setCurrentStep(chosenMove + 1);
       setPlayer(playerChoice.player === "one" ? "two" : "one");
       setReseted(true);
-      setCurrentStep(playerChoice.index + 1);
     },
     [selected, currentStep]
   );
