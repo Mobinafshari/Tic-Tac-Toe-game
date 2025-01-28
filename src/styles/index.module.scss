@@ -5,7 +5,8 @@ body {
 }
 
 .parent {
-  min-width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
   min-height: 703px;
   max-height: 703px;
   background-color: white;
@@ -22,7 +23,7 @@ body {
 }
 .dooz {
   width: 100%;
-  height: 75vh;
+  height: 480px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
