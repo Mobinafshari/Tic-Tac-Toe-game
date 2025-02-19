@@ -1,5 +1,8 @@
 # Tic-Tac-Toe Game 🎮  
 
+![Screenshot 2025-02-19 155221](https://github.com/user-attachments/assets/9f53c3ba-6af7-4302-ab4c-c8d1c7963579)
+
+
 A simple Tic-Tac-Toe game built with **React**, **Vite**, **Context API**, and **SASS**.
 
 ## 🚀 Features  
